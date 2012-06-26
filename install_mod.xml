@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD.\nAlthough MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD.\nNo support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+	<header>
+		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/>
+		<license><![CDATA[http://opensource.org/licenses/MIT MIT Licence]]></license>
+		<title lang="en"><![CDATA[SAML Authentication Plugin]]></title>
+		<title lang="fr"><![CDATA[Plugin d'Authentification SAML]]></title>
+		<description lang="en"><![CDATA[Enables your board to act as a SAML service provider.
+Your users won't see any login boxes from the forum: all authentication will be done through SAML.
+You need SimpleSAMLphp configured on your server for it to work properly.]]></description>
+		<description lang="fr"><![CDATA[Permet à votre forum de se comporter comme un Service Provide SAML.
+Les utilisateurs ne verront plus de login box du forum : toute l'authentification sera gérée via SAML.
+
+Vous devez disposer d'une installation de simpleSAMLphp.]]></description>
+		<author-group>
+			<author>
+				<realname><![CDATA[Grégoire Astruc]]></realname>
+				<username><![CDATA[gregoire.astruc]]></username>
+				<homepage><![CDATA[https://github.com/anelis/phpbb-saml]]></homepage>
+				<email><![CDATA[gregoire.astruc@anelis.org]]></email>
+			</author>
+		</author-group>
+		<mod-version>0.9.0</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>900</time>
+			<target-version>3.0.0</target-version>
+		</installation>
+		<history>
+			<entry>
+				<date>2012-06-30</date>
+				<rev-version>0.9.0</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[Initial release]]></change>
+				</changelog>
+				<changelog lang="fr">
+					<change><![CDATA[Première release]]></change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+	<action-group>
+		<copy>
+			<file from="includes/auth/auth_saml.php" to="includes/auth/auth_saml.php"/>
+			<file from="includes/hooks/hook_saml.php" to="includes/hooks/hook_saml.php"/>
+			<file from="language/en/mods/info_acp_saml.php" to="language/en/mods/info_acp_saml.php"/>
+			<file from="language/fr/mods/info_acp_saml.php" to="language/fr/mods/info_acp_saml.php"/>
+		</copy>
+		<diy-instructions lang="en"><![CDATA[Setup a SAML SP for your board using simpleSAMLphp.]]></diy-instructions>
+		<diy-instructions lang="fr"><![CDATA[Configurer un SP SAML pour votre forum avec simpleSAMLphp.]]></diy-instructions>
+	</action-group>
+</mod>
