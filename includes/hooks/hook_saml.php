@@ -62,7 +62,6 @@ function saml_user_handler(&$hook)
 
 // To avoid conflicts, we only register our hooks if SAML is the current auth method.
 if ($config['auth_method'] == 'saml') {
-    $phpbb_hook->register(array('template', 'display'), 'saml_hook');
     $phpbb_hook->register('phpbb_user_session_handler', 'saml_user_handler');
 }
 ?>  
