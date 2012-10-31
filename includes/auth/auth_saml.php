@@ -284,7 +284,7 @@ function saml_user_row($username, $default_row = array(), $select_all = true)
     if ($row)
         $user_row = $row;
 
-    return $row;
+    return $user_row;
 }
 
 /** Static SimpleSAML_Auth_Simple instance.
