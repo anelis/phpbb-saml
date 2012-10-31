@@ -36,7 +36,6 @@ if (!defined('IN_PHPBB'))
     exit;
 }
 
-include_once $config['saml_path'] . '/lib/_autoload.php';
 if (defined('IN_LOGIN') && request_var('mode', '') === 'login')
     saml_auth_or_redirect();
 
@@ -48,11 +47,16 @@ if (defined('IN_LOGIN') && request_var('mode', '') === 'login')
 function init_saml()
 {
     global $config, $user;
+
+    if(!array_key_exists('saml_path',  $config) || empty($config['saml_path'])) {
+         return $user->lang['SAML_CANNOT_INCLUDE'];
+    }
+
     $config['saml_path'] = rtrim($config['saml_path'], '/');
 
     if (!is_dir($config['saml_path']))
         return $user->lang['SAML_NOT_DIRECTORY'];
-    if (!(include_once $config['saml_path'] . '/lib/_autoload.php'))
+    if (!(include_once($config['saml_path'] . '/lib/_autoload.php')))
         return $user->lang['SAML_CANNOT_INCLUDE'];
 
     if (!is_string($config['saml_sp']) || empty($config['saml_sp']))
@@ -111,11 +115,25 @@ function login_saml(&$username, &$password)
             if (!empty($config['saml_mail'])) 
                 $usermail = utf8_htmlspecialchars(saml_attribute($config['saml_mail']));
 
+            // retrieve default group id
+            global $db;
+            $sql = 'SELECT group_id
+                    FROM ' . GROUPS_TABLE . "
+                    WHERE group_name = '" . $db->sql_escape('REGISTERED') . "'
+                    AND group_type = " . GROUP_SPECIAL;
+            $result = $db->sql_query($sql);
+            $row = $db->sql_fetchrow($result);
+            $db->sql_freeresult($result);
+            if (!$row) {
+                trigger_error('NO_GROUP');
+            }
+
             $user_row = array(
                 'username' => $username,
                 'user_password' => phpbb_hash($usermail . rand() . $username),
                 'user_email' => $usermail,
                 'user_type'  => USER_NORMAL,
+                'group_id'   => (int) $row['group_id'],
                 'user_ip'    => $user->ip,
                 'user_new'   => ($config['new_member_post_limit']) ? 1 : 0,
             );
@@ -278,9 +296,8 @@ function saml_user_row($username, $default_row = array(), $select_all = true)
 function saml_instance()
 {
     global $config;
-    static $saml = null;
-    if ($saml === null)
-        $saml = new SimpleSAML_Auth_Simple($config['saml_sp']);
+    init_saml();
+    $saml = new SimpleSAML_Auth_Simple($config['saml_sp']);
     return $saml;
 }
 
