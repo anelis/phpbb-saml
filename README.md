@@ -15,6 +15,15 @@ Installation
 
 In simpleSAMLphp, configure a Service Provider for you phpBB board.
 
+In the metadata, add a RelayState to your board login page.
+
+    $metadata['https://forum.example.com/'] = array(
+      /* AssertionConsumer, SSO... */
+      'RelayState' => 'https://forum.example.com/ucp.php?mode=login',
+    );
+
+This a bit of a hack to trick phpBB into actually doing the authentication and redirects.
+
 Install the phpBB SAML Auth plugin just as any other plugin.
 
 Then in the ACP, under `Authentication`, select _Saml_ and fill in the
