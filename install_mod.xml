@@ -23,13 +23,25 @@ Vous devez disposer d'une installation de simpleSAMLphp.]]></description>
 				<email><![CDATA[gregoire.astruc@anelis.org]]></email>
 			</author>
 		</author-group>
-		<mod-version>0.9.0</mod-version>
+		<mod-version>1.0.0</mod-version>
 		<installation>
 			<level>easy</level>
 			<time>900</time>
-			<target-version>3.0.0</target-version>
+			<target-version>3.0.10</target-version>
 		</installation>
 		<history>
+			<entry>
+				<date>2012-11-01</date>
+				<rev-version>1.0.0</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[Fixed bug when user did not exist]]></change>
+					<change><![CDATA[Automatically assign new users to default group]]></change>
+				</changelog>
+				<changelog lang="fr">
+					<change><![CDATA[Correction d'un bug à la création d'un utilisateur]]></change>
+					<change><![CDATA[Les nouveaux utilisateurs sont automatiquement assignés au groupe par défaut]]></change>
+				</changelog>
+			</entry>
 			<entry>
 				<date>2012-06-30</date>
 				<rev-version>0.9.0</rev-version>
@@ -49,7 +61,11 @@ Vous devez disposer d'une installation de simpleSAMLphp.]]></description>
 			<file from="language/en/mods/info_acp_saml.php" to="language/en/mods/info_acp_saml.php"/>
 			<file from="language/fr/mods/info_acp_saml.php" to="language/fr/mods/info_acp_saml.php"/>
 		</copy>
-		<diy-instructions lang="en"><![CDATA[Setup a SAML SP for your board using simpleSAMLphp.]]></diy-instructions>
-		<diy-instructions lang="fr"><![CDATA[Configurer un SP SAML pour votre forum avec simpleSAMLphp.]]></diy-instructions>
+		<diy-instructions lang="en"><![CDATA[Setup a SAML SP for your board using simpleSAMLphp.
+
+In the metadata, add a RelayState to http://forum.example.com/ucp.php?mode=login]]></diy-instructions>
+		<diy-instructions lang="fr"><![CDATA[Configurer un SP SAML pour votre forum avec simpleSAMLphp.
+
+Dans les metadata, ajouter un RelayState vers http://forum.example.com/ucp.php?mode=login]]></diy-instructions>
 	</action-group>
 </mod>
