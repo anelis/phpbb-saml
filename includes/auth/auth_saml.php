@@ -78,7 +78,7 @@ function autologin_saml()
     if (!saml_instance()->isAuthenticated())
         return array();
 
-    return saml_user_row(saml_attribute($config['saml_uid']));
+    return saml_user_row(utf8_htmlspecialchars(saml_attribute($config['saml_mail'])));
 }
 
 /** Login through SAML.
@@ -106,14 +106,17 @@ function login_saml(&$username, &$password)
     saml_auth_or_redirect();
 
     if ($saml->isAuthenticated()) {
-        $username = saml_attribute($config['saml_uid']);
-        $user_row = saml_user_row($username);
+		// Use usermail instead of username; username could be changed in phpBB3 ucp, mail should be more unique
+		$usermail = '';
+		if (!empty($config['saml_mail'])) 
+			$usermail = utf8_htmlspecialchars(saml_attribute($config['saml_mail']));
+
+        $user_row = saml_user_row($usermail);
 
         if (empty($user_row)) {
             // User unknown... We create his/her profile.
-            $usermail = '';
-            if (!empty($config['saml_mail'])) 
-                $usermail = utf8_htmlspecialchars(saml_attribute($config['saml_mail']));
+
+			$username = saml_attribute($config['saml_uid']));
 
             // retrieve default group id
             global $db;
@@ -263,20 +266,20 @@ function saml_username()
  *
  *  Reads the user row from the database. If none is found, then returns the $default_row.
  *
- *  @param string $username Username.
+ *  @param string $usermail Usermail.
  *  @param array $default_row The default row in case no user is found.
  *  @param bool $select_all Whether to retrieve all fields or just a specific subset.
  *
  *  @return array The user row or $default_row if the user does not exists in phpBB.
  */
-function saml_user_row($username, $default_row = array(), $select_all = true)
+function saml_user_row($usermail, $default_row = array(), $select_all = true)
 {
     global $db;
     $user_row = $default_row;
     $sql = 'SELECT';
     if ($select_all)
         $sql .= ' *';
-    $sql .= ' FROM ' . USERS_TABLE . " WHERE username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
+    $sql .= ' FROM ' . USERS_TABLE . " WHERE user_email = '" . $usermail . "'";
     $result = $db->sql_query($sql);
     $row = $db->sql_fetchrow($result);
     $db->sql_freeresult($result);
